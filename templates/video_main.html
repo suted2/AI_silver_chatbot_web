@@ -1,0 +1,207 @@
+</html>
+
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <title>{{title}}</title>
+        <style>
+            .top_region {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-left: 20px;
+                }
+            .dasan_mark {
+                width: 150px;
+                height: 50px;
+                background-image: url('http://arisys.co.kr/wp-content/uploads/2019/10/logo.png');
+                background-position: center;
+                background-size: cover;
+                margin: 20px 20px auto auto;
+                }
+            .btn_1 {
+                width: 80px;
+                margin-top: 20px;
+                margin-left: 10px;
+                }
+            .video_region {
+                color: black;
+                width: 90%;
+                height: 50%;
+                max-width: 700px;
+                max-height: 700px;
+                border-style:solid;
+                text-align: center;
+                padding-top: 10px;
+                margin: 20px auto;
+                }
+            .sub_box {
+                width: 90%;
+                max-width: 700px;
+                display: none;
+                position: absolute;
+                left: 50%;
+                top: 60%;
+                transform: translate(-50%, -50%);
+                padding: 10px;
+                color:black;
+                border-style:solid;
+                text-align: center;
+                background-color: gray;
+                }
+            .sub_on {
+                width : 150px;
+                position: relative;
+                top: 15px;
+                left: 81%;
+                transform: translate(-50%, -50%);
+                }
+            .mic_btn_on {
+                width:130px;
+                height:130px;
+                border: 1px solid black;
+                border-radius: 100px;
+                text-align:center;
+                padding-top: 25px;
+                margin-left: auto;
+                margin-right: auto;
+                }
+            .mic_btn_off {
+                width:130px;
+                height:130px;
+                border: 1px solid red;
+                background-color:rgba(255, 0, 0, 0.5);
+                border-radius: 100px;
+                display:none;
+                text-align:center;
+                padding-top: 25px;
+                margin-left: auto;
+                margin-right: auto;
+                }
+        
+        </style>
+    </head>
+
+    <script>
+        navigator
+            .mediaDevices
+            .getUserMedia({audio: true})
+            .then(stream => { handlerFunction(stream) });
+
+        function handlerFunction(stream) {
+            rec = new MediaRecorder(stream);
+            rec.ondataavailable = e => {
+                audioChunks.push(e.data);
+                if (rec.state == "inactive") {
+                    let blob = new Blob(audioChunks, {type: 'audio/mpeg-3'});
+                    sendData(blob);
+                }
+            }
+        }
+
+        function sendData(data) {
+            var form = new FormData();
+            form.append('file', data, 'data.mp3');
+            form.append('title', 'data.mp3');
+            //Chrome inspector shows that the post data includes a file and a title.
+            $.ajax({
+                type: 'POST',
+                url: '/save-record',
+                data: form,
+                cache: false,
+                processData: false,
+                contentType: false
+            }).done(function(data) {
+                console.log(data);
+            });
+        }
+
+        $(document).ready(function() {
+            // '자막 켜기' 버튼을 클릭했을 때
+            $("#btn-on").click(function() {
+                var captionDiv = $("#sub-box");
+                var captionButton = $(this);
+
+                if (captionDiv.is(":hidden")) {
+                captionDiv.show(); // 자막 div 태그를 보여줌
+                captionButton.text("📃 자막 끄기"); // 버튼 텍스트 변경
+                } else {
+                captionDiv.hide(); // 자막 div 태그를 숨김
+                captionButton.text("📃 자막 켜기"); // 버튼 텍스트 변경
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            // '녹음 시작' 버튼을 클릭했을 때
+            $("#mic_btn_on").click(function(){
+                console.log('Recording are started..');
+                audioChunks = [];
+                rec.start();
+                var record_stop = $('#mic_btn_off');
+                var record_btn = $(this);
+
+                if (record_stop.is(":hidden")) {
+                    record_btn.hide();
+                    record_stop.show(); // 자막 div 태그를 보여줌
+                    } else {
+                    record_btn.show();
+                    record_stop.hide();
+                    }
+            });
+            // '녹음 종료' 버튼을 클릭했을 때
+            $("#mic_btn_off").click(function(){
+                console.log("Recording are stopped.");
+                rec.stop();
+                var record_stop = $(this);
+                var record_btn = $("#mic_btn_on");
+
+                if (record_stop.is(":hidden")) {
+                    record_btn.hide();
+                    record_stop.show(); // 자막 div 태그를 보여줌
+                    } else {
+                    record_btn.show();
+                    record_stop.hide();
+                    }
+            });
+        });
+
+    </script>
+
+
+
+    
+    <body>
+        <div class="top_region">
+            <button type="button", class="btn_1 btn-outline-secondary btn-lg", onclick="location.href='/main'"> 🔙 </button>
+            <div class="dasan_mark"></div>
+        </div>
+
+        <div class="video_region">
+            <div class="sub_on"><button type="button", class="btn btn-outline-dark", id="btn-on" >📃 자막 켜기</button></div>
+            <h1>영상이 들어감</h1>
+            <h5>영상!</h5>
+        </div>
+        
+        <div class="sub_box" id="sub-box">
+            안녕하세요!
+        </div>
+
+        <div class="mic_region">
+            <div class="mic_btn_on", id="mic_btn_on">
+                <h1>🎙️</h1>
+                <h4>녹음 시작</h4>
+            </div>
+            <div class="mic_btn_off", id="mic_btn_off">
+                <h1>⬜</h1>
+                <h4>녹음 종료</h4>
+            </div>
+        </div>
+
+    </body>
+</html>
