@@ -1,5 +1,13 @@
 </html>
 
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+    {{ message }}
+{% endfor %}
+
+
+
 <!DOCTYPE html>
 <html lang="ko">
     <head>
@@ -85,6 +93,7 @@
                 }
         
         </style>
+
     </head>
 
     <script>
@@ -177,6 +186,7 @@
 
     
     <body>
+
         <div class="top_region">
             <button type="button", class="btn_1 btn-outline-secondary btn-lg", onclick="location.href='/main'"> 🔙 </button>
             <div class="dasan_mark"></div>
@@ -202,6 +212,12 @@
                 <h4>녹음 종료</h4>
             </div>
         </div>
+
+
+
+
+
+
 
     </body>
 </html>
