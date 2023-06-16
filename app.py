@@ -83,12 +83,9 @@ def save_record():
         print(ment)
         return ment 
     else:
-
-        ment = "정상적인 음성입니다."
-        print(ment)
-        return ment
+        print(text)
+        return text
     #return "<h2>success</h2>"
-
 
 
 

@@ -10,7 +10,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <title>{{title}}</title>
@@ -88,6 +90,33 @@
                 margin-left: auto;
                 margin-right: auto;
                 }
+            
+            
+
+            .error {
+                background-color: rgb(234, 50, 50);
+                }
+
+            .message {
+                background-color: rgb(65, 156, 82);
+            }
+
+            .btn.btn-primary{
+                position: relative;
+                top: 30px;
+                left: 5%;
+
+            }
+
+            .offcanvas-size-xl {
+                --bs-offcanvas-height: min(95vw, 500px) !important;
+            }
+
+            .container {
+                position: absolute;
+                top: 450px;
+            
+            }
 
         </style>
 
@@ -126,18 +155,33 @@
                 console.log(data);
                 
                 if (data=='욕설이 감지되었습니다.') {
-                    // 토글 할 버튼 선택 (btn1)
-                    //const btn1 = document.getElementById('btn1');
-                    alert("욕설발견")
-                    //btn1.style.visibility = 'visible';
+                    // const btn1 = document.getElementById('btn1');
+                    $("#flash-notification").html(
+                        `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <span>욕설이 없는 말로 다시 한번 질문해주세요.</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        `
+                    )                    
                 
                 }
+//                .addClass('message')
                 else {
-                    // 토글 할 버튼 선택 (btn2)
-                    //const btn2 = document.getElementById('btn2');
-                    
                     //btn2.style.visibility = 'visible';
-                    alert("욕설없음")
+                    $("#flash-notification").html(
+                        `
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>${data}</strong> 해당 질문을 해주셨습니다. 
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        `
+                    )
+                    
+                    // setInterval(function(){
+                    //     $('.alert').fadeout();
+                    // }, 2000)
+                    
                 }
 
             });
@@ -200,7 +244,7 @@
     
     <body>
         
-
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
         <div class="top_region">
             <button type="button", class="btn_1 btn-outline-secondary btn-lg", onclick="location.href='/main'"> 🔙 </button>
             <div class="dasan_mark"></div>
@@ -210,6 +254,11 @@
             <div class="sub_on"><button type="button", class="btn btn-outline-dark", id="btn-on" >📃 자막 켜기</button></div>
             <h1>영상이 들어감</h1>
             <h5>영상!</h5>
+            <!-- 삥글삥글 도는 로딩창 -->
+            <div class="spinner-border" role="status"> 
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            
         </div>
     
 
@@ -217,38 +266,66 @@
             안녕하세요!
         </div>
 
-        <div class="container">
-            <!-- <h1 id="btn1" style="visibility:hidden;">욕설을 자제하여 주십쇼</h1>  -->
-            <div class="alert alert-warning alert-dismissible fade show" role="alert" id="btn1", style="visibility:hidden;">
-                <span>욕설을 자제하여 주십쇼</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            
-            <div class="alert alert-warning alert-dismissible fade show" role="alert" id="btn2", style="visibility:hidden;">
-                <span>정상적인 음성입니다.</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
 
-            <!-- <h1 id="btn2" style="visibility:hidden;">정상적인 음성입니다.</h1> -->
-        </div> 
 
         <div class="mic_region">
-            <div class="mic_btn_on", id="mic_btn_on">
+            <div class="mic_btn_on", id="mic_btn_on", position:absoulte; z-index:2;>
+                <!-- 클릭 강조 -->
+                <span class="badge rounded-pill text-bg-primary">Click!</span>
                 <h1>🎙️</h1>
                 <h4>녹음 시작</h4>
             </div>
-            <div class="mic_btn_off", id="mic_btn_off">
+            <div class="container">
+                <div id="flash-notification", position:absolute; z-index:1;></div>
+            </div> 
+
+            <div class="mic_btn_off", id="mic_btn_off", position:absolute; z-index:2;>
+                <span class="badge rounded-pill text-bg-primary">Click!</span>
                 <h1>⬜</h1>
                 <h4>녹음 종료</h4>
             </div>
+
+
+
         </div>
 
+        
 
 
 
 
 
 
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">자주 묻는 질문</button>
+
+
+
+    <div class="offcanvas offcanvas-bottom offcanvas-size-xl" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" data-bs-backdrop="false" data-bs-sroll="true" >
+    
+
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasBottomLabel">자주 묻는 질문 목록</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body large">
+        <!-- 자주묻는 질문 넣을곳  -->
+        1<br>
+        2<br>
+        3<br>
+        4<br>
+        5<br>
+        6<br>
+        7<br>
+        8<br>
+        9<br>
+        10<br>
+        11<br>
+        12<br>
+        13<br>
+        14<br>
+        15<br>
+    </div>
+    </div>
 
 
 
