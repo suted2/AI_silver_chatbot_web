@@ -5,6 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -26,6 +27,11 @@
                 }
             .btn_1 {
                 width: 80px;
+                margin-top: 20px;
+                margin-left: 10px;
+                }
+            .btn_2 {
+                width: 20px;
                 margin-top: 20px;
                 margin-left: 10px;
                 }
@@ -83,16 +89,69 @@
                 margin-left: auto;
                 margin-right: auto;
                 }
+            .container{ 
+                width:400px; 
+                margin:0px auto; 
+                padding:40px 0;
+                display: none;
+                position: absolute;
+                left: 50%;
+                top: 60%;
+                transform: translate(-50%, -50%);
+                background:#eee; 
+                color:#666; 
+                font-family:Arial, sans-serif; font-size:0.75em; 
+                padding:5px; margin:0; 
+                text-align:right;
+                }
+            .scrollbox{ 
+                width:400px; 
+                height:300px;  
+                overflow:auto; overflow-x:hidden; 
+                }
+            .container > p{ 
+                background:#eee; 
+                color:#666; 
+                font-family:Arial, sans-serif; font-size:0.75em; 
+                padding:5px; margin:0; 
+                text-align:right;
+                }
+                .error {
+                background-color: rgb(234, 50, 50);
+                }
+
+            .message {
+                background-color: rgb(65, 156, 82);
+            }
+
+            .btn.btn-primary{
+                position: relative;
+                top: 30px;
+                left: 5%;
+
+            }
+
+            .offcanvas-size-xl {
+                --bs-offcanvas-height: min(95vw, 500px) !important;
+            }
+
+            .container-dd {
+                position: absolute;
+                top: 450px;
+            
+            }
         
         </style>
     </head>
 
     <script>
+    var gbl_data;
+
         navigator
             .mediaDevices
             .getUserMedia({audio: true})
             .then(stream => { handlerFunction(stream) });
-
+        console.log('Start');
         function handlerFunction(stream) {
             rec = new MediaRecorder(stream);
             rec.ondataavailable = e => {
@@ -114,11 +173,61 @@
                 url: '/save-record',
                 data: form,
                 cache: false,
+                async: false,
                 processData: false,
                 contentType: false
             }).done(function(data) {
                 console.log(data);
+                
+                gbl_data = data;
+                
+                if (data=='욕설이 감지되었습니다.') {
+                    // const btn1 = document.getElementById('btn1');
+                    $("#flash-notification").html(
+                        `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <span>욕설이 없는 말로 다시 한번 질문해주세요.</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        `
+                    )                    
+                
+                }
+
+                else {
+                    $("#video_region").html(  
+                    ` 
+                        <div class="sub_on"><button type="button", class="btn btn-outline-dark", id="btn-on-s" >📃 자막 켜기</button></div>
+                            <h3>audio = ${gbl_data.audio}</h3>
+                            <h3>video = ${gbl_data.video}</h3>
+                        </div>
+                        <video height="180" width="288" autoplay>    <source src="intro.mp4" type="video/mp4"></video>
+                        <div class="sub_box" id="sub-box-s">
+                            ${gbl_data.answer}
+                        </div>
+
+                    `
+                )
+                    
+                }
             });
+
+
+            $(document).ready(function() {
+            // '자막 켜기' 버튼을 클릭했을 때
+            $("#btn-on-s").click(function() {
+                var captionDiv = $("#sub-box-s");
+                var captionButton = $(this);
+
+                if (captionDiv.is(":hidden")) {
+                captionDiv.show(); // 자막 div 태그를 보여줌
+                captionButton.text("📃 자막 끄기"); // 버튼 텍스트 변경
+                } else {
+                captionDiv.hide(); // 자막 div 태그를 숨김
+                captionButton.text("📃 자막 켜기"); // 버튼 텍스트 변경
+                }
+            });
+        });
         }
 
         $(document).ready(function() {
@@ -138,6 +247,25 @@
         });
 
         $(document).ready(function() {
+            // '자주묻는 질문' 버튼을 클릭했을 때
+            $("#faq-btn").click(function() {
+                var captionDiv = $("#scrollbox");
+                var captionButton = $(this);
+                captionDiv.show(); // 자막 div 태그를 보여줌
+                console.log(gbl_data); // 자막 div 태그를 보여줌
+            });
+        });
+
+        $(document).ready(function() {
+            // '자주묻는 질문 닫기' 버튼을 클릭했을 때
+            $("#faq-btn-exit").click(function() {
+                var captionDiv = $("#scrollbox");
+                var captionButton = $(this);
+                captionDiv.hide(); // 자막 div 태그를 보여줌
+            });
+        });
+
+        $(document).ready(function() {
             // '녹음 시작' 버튼을 클릭했을 때
             $("#mic_btn_on").click(function(){
                 console.log('Recording are started..');
@@ -145,14 +273,14 @@
                 rec.start();
                 var record_stop = $('#mic_btn_off');
                 var record_btn = $(this);
-
+                
                 if (record_stop.is(":hidden")) {
                     record_btn.hide();
                     record_stop.show(); // 자막 div 태그를 보여줌
-                    } else {
+                } else {
                     record_btn.show();
                     record_stop.hide();
-                    }
+                }
             });
             // '녹음 종료' 버튼을 클릭했을 때
             $("#mic_btn_off").click(function(){
@@ -171,37 +299,84 @@
             });
         });
 
+
+
     </script>
 
 
 
     
     <body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
         <div class="top_region">
             <button type="button", class="btn_1 btn-outline-secondary btn-lg", onclick="location.href='/main'"> 🔙 </button>
             <div class="dasan_mark"></div>
         </div>
 
-        <div class="video_region">
+        <div class="video_region" id="video_region">
             <div class="sub_on"><button type="button", class="btn btn-outline-dark", id="btn-on" >📃 자막 켜기</button></div>
             <h1>영상이 들어감</h1>
+            <h1>{{answer_id.video}}</h1>
+            <h1>{{answer_id.audio}}</h1>
+            <div id="test"><h3> 응애 </h3></div>
             <h5>영상!</h5>
         </div>
         
         <div class="sub_box" id="sub-box">
-            안녕하세요!
+            {{answer_id.answer}}
         </div>
+        
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">자주 묻는 질문</button>
 
+
+
+    <div class="offcanvas offcanvas-bottom offcanvas-size-xl" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" data-bs-backdrop="false" data-bs-sroll="true" >
+    
+
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasBottomLabel">자주 묻는 질문 목록</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body large">
+        <!-- 자주묻는 질문 넣을곳  -->
+        
+                    <table>
+            <tr>
+                <th>번호</th>
+                <th>자주 묻는 질문</th>
+            </tr>
+                {% for row in result%}
+                <tr>
+                    <td>{{row.count}}</td>
+                    <td><button onclick="location.href='/video_main?category={{title}}&id={{row.id}}'">{{row.question}}</button></td>
+                </tr>
+                {% endfor %}
+        </table>
+        
+
+    </div>
+    </div>
+        
         <div class="mic_region">
-            <div class="mic_btn_on", id="mic_btn_on">
+            <div class="mic_btn_on", id="mic_btn_on", position:absoulte; z-index:2;>
+                <!-- 클릭 강조 -->
+                <span class="badge rounded-pill text-bg-primary">Click!</span>
                 <h1>🎙️</h1>
                 <h4>녹음 시작</h4>
             </div>
-            <div class="mic_btn_off", id="mic_btn_off">
+            <div class="container-dd">
+                <div id="flash-notification", position:absolute; z-index:1;></div>
+            </div> 
+
+
+            <div class="mic_btn_off", id="mic_btn_off", position:absolute; z-index:2;>
+                <span class="badge rounded-pill text-bg-primary">Click!</span>
                 <h1>⬜</h1>
                 <h4>녹음 종료</h4>
             </div>
         </div>
 
     </body>
+
+    </div>
 </html>
