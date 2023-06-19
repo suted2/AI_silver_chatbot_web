@@ -1,4 +1,4 @@
-![image](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/ff97e974-6537-410c-8ed4-439fb834938e)# AI_silver_chatbot_web
+# AI_silver_chatbot_web
 AI_silver_chatbot_web 구현을 위한 레포입니다. 
 
 
@@ -6,6 +6,7 @@ AI_silver_chatbot_web 구현을 위한 레포입니다.
 
 ## Front_page
 ![image](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/22ea6473-8b3a-4333-9fa1-dfb976101f3c)
+
 현재 표지 페이지의 구성입니다.
 
 상담사를 선택할 수 있으며 선택한 상담사와 상담을 진행할 수 있습니다.
