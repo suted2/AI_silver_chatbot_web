@@ -1,6 +1,5 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
-import speech_recognition as sr
 import os
 import tempfile
 import whisper
@@ -200,4 +199,4 @@ def toxic_check(txt):
 if __name__ == '__main__':
     # app.run(debug=True)
     # host 등을 직접 지정하고 싶다면
-    app.run(host='0.0.0.0', port='4000', debug=True, threaded=True)
+    app.run(host='0.0.0.0', port='8080', debug=True, threaded=True)
