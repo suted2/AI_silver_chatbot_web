@@ -18,6 +18,8 @@ import pickle
 import torch
 from 카테고리별inference import Category_Callcenter
 
+
+
 # DB연동
 db_conn = pymysql.connect(
     host= 'localhost',
@@ -31,9 +33,7 @@ db_conn = pymysql.connect(
 print(db_conn)
 counts = dict()
 
-# df_normal = pd.
-# df_corona = 
-# df_water = 
+
 
 category_dict = {'일반행정' : 0,
               '코로나' : 1,
@@ -46,16 +46,14 @@ df1 = pd.read_pickle('corona_emb_id.pickle')
 df2 = pd.read_pickle('water_emb_id.pickle')
 df3 = pd.DataFrame()
 dfs = [df0, df1, df2, df3]
-print('embedding loaded!')
+# print('embedding loaded!')
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(device)
 
 # emb_dir = 'datasets'
-model_bert, tokenizer = Load_Model_Tokenizer('bert_model')   # model 저장 경로
+model_bert, tokenizer_bert = Load_Model_Tokenizer('bert_model')   # model 저장 경로
 model_bert.to(device)
-
-
 
 model_STT = whisper.load_model("medium", device= device)
 
@@ -80,20 +78,23 @@ app.config["UPLOAD_FOLDER"] = "audio"
 recording = False
 temp_file = "temp.wav"  # 임시 파일 경로
 
+sub_stat = True
+
 @app.route('/') # 접속하는 url
 def main():
-    return render_template('main.html')
+    return render_template('first.html')
 
 @app.route('/main') # 접속하는 url
 def to_main():
-    return render_template('main.html')
+    global person_id
+    global sub_stat
+    person_id = request.args.get('person_id')
+    return render_template('main.html', sub_state = sub_stat)
 
 @app.route('/video_main') # 접속하는 url
 def video_main():
     global category
     category = request.args.get('category')
-
-    # polyy_infer(df[df['category'] == ]) 
 
     if 'id' in request.args:
         answer_id = request.args.get('id')
@@ -180,8 +181,8 @@ def infer_STT(filename):
 
 def infer_POLY(text, emb_df):
     global model_bert
-    global tokenizer
-    call_center = Category_Callcenter(model=model_bert, tokenizer=tokenizer, emb_df=emb_df, device=device)
+    global tokenizer_bert
+    call_center = Category_Callcenter(model=model_bert, tokenizer=tokenizer_bert, emb_df=emb_df, device=device)
     emb_idx = call_center.inference(text)
     print(emb_idx)
     answer_id = emb_df.iloc[emb_idx]['index']
@@ -195,6 +196,43 @@ def toxic_check(txt):
     
     else: 
         return False
+    
+@app.route('/video_main', methods=['POST'])
+def txt_input():
+    global category
+    print(f'category : {category}')
+    text = request.form['question']
+    if toxic_check(text):
+        ment = "욕설이 감지되었습니다."
+        # print(ment)
+        return ment
+    
+    print(text)
+    # for result in pipe(text)[0]:
+        # print(result)
+    emb_df = dfs[category_dict[category]]
+    answer_id = infer_POLY(text, emb_df)
+    
+    print(answer_id)
+
+    cursor = db_conn.cursor()
+
+    query = f'select * from path_table where id = {answer_id}'
+
+    cursor.execute(query)
+    answer_id = [{'audio' : c[1], 'video' : c[2], 'answer' : c[3], 'text' : text} for c in cursor][0]
+    
+    cursor = db_conn.cursor()
+    query = f'select * from faq where category = {category_dict[category]} order by count desc limit 20'
+
+    cursor.execute(query)
+    
+    result = []
+    for idx, i in enumerate(cursor):
+        counts[i[0]] = i[2]
+        result.append({'id' : i[0], 'question' : i[1], 'count' : idx})
+
+    return render_template('video_main.html', title = category, answer_id= answer_id, result= result)
 
 if __name__ == '__main__':
     # app.run(debug=True)

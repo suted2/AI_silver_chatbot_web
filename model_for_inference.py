@@ -8,7 +8,7 @@ def Load_Model_Tokenizer(model_path):
 
     bert_config = BertConfig.from_json_file(os.path.join(model_path, 'config.json'))
     previous_model_file = os.path.join(model_path, 'pytorch_model.bin')
-    print(previous_model_file)
+    # print(previous_model_file)
 
     model_state_dict = torch.load(previous_model_file, map_location="cpu")
 
@@ -23,5 +23,5 @@ def Load_Model_Tokenizer(model_path):
     model.load_state_dict(model_state_dict)
     model.eval()
 
-    print('모델 준비 끝')
+    # print('모델 준비 끝')
     return model, tokenizer

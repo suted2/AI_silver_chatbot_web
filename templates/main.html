@@ -5,29 +5,40 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <title>Temp</title>
         <style>
+            .top_region {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-left: 20px;
+                }
             .dasan_mark {
                 width: 150px;
                 height: 50px;
-                background-image: url('http://arisys.co.kr/wp-content/uploads/2019/10/logo.png');
+                background-image: url('https://www.120dasan.or.kr/static/dsnc/img/c09-img-1.png');
                 background-position: center;
                 background-size: cover;
                 margin: 20px 20px auto auto;
                 }
+            .back_btn {
+                width: 80px;
+                margin-top: 20px;
+                margin-left: 10px;
+                }
             .video_region {
-                color: black;
                 width: 90%;
                 height: 50%;
                 max-width: 700px;
                 max-height: 700px;
-                border-style:solid;
                 text-align: center;
-                padding-top: 10px;
                 margin: 20px auto;
+                }
+            .video {
+                width: 100%;
+                height: 100%;
                 }
             .sub_box {
                 width: 90%;
@@ -41,15 +52,13 @@
                 color:black;
                 border-style:solid;
                 text-align: center;
-                background-color: gray;
+                background-color: rgb(215, 215, 215);
                 }
             .sub_on {
-                width : 150px;
                 position: relative;
-                top: 15px;
-                left: 81%;
+                left: 82%;
+                bottom: 90%;
                 transform: translate(-50%, -50%);
-                
                 }
             .btn_region1 {
                 text-align: center;
@@ -126,18 +135,20 @@
                     }
                 });
             });
-
         </script>
     </head>
     
     <body>
-        <div class="dasan_mark">
-    
+        <div class="top_region">
+            <button type="button", class="back_btn btn-outline-secondary btn-lg", onclick="location.href='/'"> 🔙 </button>
+            <div class="dasan_mark"></div>
         </div>
+
         <div class="video_region">
-            <div class="sub_on"><button type="button", class="btn btn-outline-dark", id="btn-on" >📃 자막 켜기</button></div>
-            <h1>영상이 들어감</h1>
-            <h5>영상!</h5>
+            <video class="video" autoplay> 
+                <source src="{{ url_for('static', filename='video/intro.mp4') }}" type="video/mp4">
+            </video>
+            <div class="sub_on"><button type="button", class="btn btn-secondary", id="btn-on" >📃 자막 켜기</button></div>
         </div>
         
         <div class="sub_box" id="sub-box">
@@ -146,18 +157,18 @@
         
 
         <div class="btn_region1">
-            <div class="btn_1", onclick="location.href='/video_main?id=admin'">
+            <div class="btn_1", onclick="location.href='/video_main?category=일반행정'">
                 <h2> 일반 행정 </h2>
             </div>
-            <div class="btn_2", onclick="location.href='/video_main?id=corona'">
+            <div class="btn_2", onclick="location.href='/video_main?category=코로나'">
                 <h2> 코로나 </h2>
             </div>
         </div>
         <div class="btn_region2">
-            <div class="btn_3", onclick="location.href='/video_main?id=sewage'">
+            <div class="btn_3", onclick="location.href='/video_main?category=생활하수도'">
                 <h2>생활하수도</h2>
             </div>
-            <div class="btn_4", onclick="location.href='/video_main?id=transport'">
+            <div class="btn_4", onclick="location.href='/video_main?category=대중교통'">
                 <h2>대중 교통</h2>
             </div>
         </div>
