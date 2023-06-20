@@ -4,15 +4,6 @@ AI_silver_chatbot_web 구현을 위한 레포입니다.
 
 
 
-## Front_page
-![image](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/22ea6473-8b3a-4333-9fa1-dfb976101f3c)
-
-현재 표지 페이지의 구성입니다.
-
-상담사를 선택할 수 있으며 선택한 상담사와 상담을 진행할 수 있습니다.
-
-현재 개발 및 선정 중입니다.
-
 
 ## Main_page 
 
@@ -42,7 +33,7 @@ STT 모델을 거처 text가 전달 될 계획입니다.
 * [x] 메인 페이지 <br>
 * [x] 모델 태우기 <br>
 * [x] 모델 결과 추출 <br>
-* [..ing] 표지 페이지 <br>
-* [x] 자주 묻는 질문 만들기 <br>
-* [x] DB 연결 <br>
-* [x] chat bot 더하기 <br> 
+* [ ] 표지 페이지 <br>
+* [ ] 자주 묻는 질문 만들기 <br>
+* [ ] DB 연결 <br>
+* [ ] chat bot 더하기 <br> 

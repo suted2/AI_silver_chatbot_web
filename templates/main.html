@@ -6,9 +6,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href="https://webfontworld.github.io/SCoreDream/SCoreDream.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <title>Temp</title>
         <style>
+            * {
+                user-select: none;
+              }
             .top_region {
                 display: flex;
                 justify-content: space-between;
@@ -24,9 +28,12 @@
                 margin: 20px 20px auto auto;
                 }
             .back_btn {
-                width: 80px;
-                margin-top: 20px;
-                margin-left: 10px;
+                width: 120px;
+                    margin-top: 20px;
+                    margin-left: 10px;
+                    font-family: 'SCoreDream';
+                    font-weight: 700;
+                    font-style: normal;
                 }
             .video_region {
                 width: 90%;
@@ -67,12 +74,13 @@
                 width: 40%;
                 max-width: 150px;
                 height: 80px;
-                border: 1px solid red;
                 border-radius: 100px;
+                border: 1px solid black;
+                background-color: #C2FFF0;
                 text-align:center;
                 display:inline-block;
-                margin-left: 6%;
                 padding-top: 25px;
+                margin-left: 6%;
                 margin-top:20px;
                 margin-bottom: 30px;
                 }
@@ -80,8 +88,9 @@
                 width: 40%;
                 max-width: 150px;
                 height: 80px;
-                border: 1px solid blue;
                 border-radius: 100px;
+                border: 1px solid black;
+                background-color: #C2FFF0;
                 display:inline-block;
                 text-align:center;
                 padding-top: 25px;
@@ -97,7 +106,8 @@
                 width: 40%;
                 max-width: 150px;
                 height: 80px;
-                border: 1px solid green;
+                border: 1px solid black;
+                background-color: #C2EDFF;
                 border-radius: 100px;
                 display:inline-block;
                 text-align:center;
@@ -109,6 +119,7 @@
                 width: 40%;
                 max-width: 150px;
                 height: 80px;
+                background-color: #C2EDFF;
                 border: 1px solid black;
                 border-radius: 100px;
                 display:inline-block;
@@ -140,7 +151,7 @@
     
     <body>
         <div class="top_region">
-            <button type="button", class="back_btn btn-outline-secondary btn-lg", onclick="location.href='/'"> 🔙 </button>
+            <button type="button", class="back_btn btn-outline-secondary btn-lg", onclick="location.href='/'"> 뒤로 가기 </button>
             <div class="dasan_mark"></div>
         </div>
 
@@ -148,7 +159,7 @@
             <video class="video" autoplay> 
                 <source src="{{ url_for('static', filename='video/intro.mp4') }}" type="video/mp4">
             </video>
-            <div class="sub_on"><button type="button", class="btn btn-secondary", id="btn-on" >📃 자막 켜기</button></div>
+            <div class="sub_on"><button type="button", class="btn btn-secondary", id="btn-on">📃 자막 켜기</button></div>
         </div>
         
         <div class="sub_box" id="sub-box">
@@ -158,18 +169,18 @@
 
         <div class="btn_region1">
             <div class="btn_1", onclick="location.href='/video_main?category=일반행정'">
-                <h2> 일반 행정 </h2>
+                <h2 style="font-family: 'SCoreDream'; font-weight: 600; font-style: normal;"> 일반 행정 </h2>
             </div>
             <div class="btn_2", onclick="location.href='/video_main?category=코로나'">
-                <h2> 코로나 </h2>
+                <h2 style="font-family: 'SCoreDream'; font-weight: 600; font-style: normal;"> 코로나 </h2>
             </div>
         </div>
         <div class="btn_region2">
             <div class="btn_3", onclick="location.href='/video_main?category=생활하수도'">
-                <h2>생활하수도</h2>
+                <h2 style="font-family: 'SCoreDream'; font-weight: 600; font-style: normal;">생활하수도</h2>
             </div>
             <div class="btn_4", onclick="location.href='/video_main?category=대중교통'">
-                <h2>대중 교통</h2>
+                <h2 style="font-family: 'SCoreDream'; font-weight: 600; font-style: normal;">대중 교통</h2>
             </div>
         </div>
     </body>
