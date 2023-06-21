@@ -1,22 +1,19 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 import os
-import tempfile
 import whisper
 from transformers import TextClassificationPipeline, BertForSequenceClassification, AutoTokenizer
-import pyaudio 
-import wave
-import time
-import uuid
 import pandas as pd
 import torch
+import numpy as np
 
 import pymysql
 from model_for_inference import Load_Model_Tokenizer
 import os
-import pickle
 import torch
-from 카테고리별inference import Category_Callcenter
+from inference import Callcenter
+
+
 
 # DB연동
 db_conn = pymysql.connect(
@@ -31,31 +28,32 @@ db_conn = pymysql.connect(
 print(db_conn)
 counts = dict()
 
-# df_normal = pd.
-# df_corona = 
-# df_water = 
+
 
 category_dict = {'일반행정' : 0,
-              '코로나' : 1,
-              '생활하수도' : 2,
-              '대중교통' : 3}
+                '코로나' : 1,
+                '생활하수도' : 2,
+                '대중교통' : 3}
 category = -1
 
-df0 = pd.read_pickle('normal_emb_id.pickle')
-df1 = pd.read_pickle('corona_emb_id.pickle')
-df2 = pd.read_pickle('water_emb_id.pickle')
+df0 = pd.read_pickle('dbPickle/normal_emb_id.pickle')
+df1 = pd.read_pickle('dbPickle/corona_emb_id.pickle')
+df2 = pd.read_pickle('dbPickle/water_emb_id.pickle')
 df3 = pd.DataFrame()
 dfs = [df0, df1, df2, df3]
-print('embedding loaded!')
+# print('embedding loaded!')
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(device)
 
 # emb_dir = 'datasets'
-model_bert, tokenizer = Load_Model_Tokenizer('bert_model')   # model 저장 경로
-model_bert.to(device)
+poly_dir = 'models/poly_encoder'
+cross_dir = 'models/cross_encoder'
+cross_encoder, _ = Load_Model_Tokenizer(cross_dir, model_type='cross')
+poly_encoder, tokenizer_poly = Load_Model_Tokenizer(poly_dir, model_type='poly')
 
-
+cross_encoder.to(device)
+poly_encoder.to(device)
 
 model_STT = whisper.load_model("medium", device= device)
 
@@ -80,20 +78,23 @@ app.config["UPLOAD_FOLDER"] = "audio"
 recording = False
 temp_file = "temp.wav"  # 임시 파일 경로
 
+sub_stat = True
+
 @app.route('/') # 접속하는 url
 def main():
-    return render_template('main.html')
+    return render_template('first.html')
 
 @app.route('/main') # 접속하는 url
 def to_main():
-    return render_template('main.html')
+    global person_id
+    global sub_stat
+    person_id = request.args.get('person_id')
+    return render_template('main.html', sub_state = sub_stat)
 
 @app.route('/video_main') # 접속하는 url
 def video_main():
     global category
     category = request.args.get('category')
-
-    # polyy_infer(df[df['category'] == ]) 
 
     if 'id' in request.args:
         answer_id = request.args.get('id')
@@ -130,6 +131,43 @@ def video_main():
 
     return render_template('video_main.html', title = category, answer_id= answer_id, result= result)
 
+@app.route('/video_main', methods=['POST'])
+def txt_input():
+    global category
+    print(f'category : {category}')
+    # text = request.form['question']
+    text = request.form['question']
+    if toxic_check(text):
+        answer = "욕설이 감지되었습니다."
+        # print(ment)
+        return {'answer' : answer, 'text' : text}
+    
+    print(text)
+
+    # for result in pipe(text)[0]:
+        # print(result)
+    emb_df = dfs[category_dict[category]]
+    top_k_cross_scores, top_k_indices = infer_POLY(text, emb_df)
+    
+    max_idx = np.argmax(top_k_cross_scores)
+
+
+    if top_k_cross_scores[max_idx] > 10:
+        emb_idx = top_k_indices[max_idx]
+        answer_id = emb_df.iloc[emb_idx]['index']
+        print(answer_id)
+
+        cursor = db_conn.cursor()
+
+        query = f'select * from path_table where id = {answer_id}'
+
+        cursor.execute(query)
+        answer_id = [{'audio' : c[1], 'video' : c[2], 'answer' : c[3], 'text' : text} for c in cursor][0]
+        return answer_id
+
+    else:
+        answer = '시민님, 적절한 답변이 없습니다.'
+        return {'answer' : answer, 'text' : text}
 
 @app.route('/save-record', methods=['POST'])
 def save_record():
@@ -143,7 +181,6 @@ def save_record():
     if file.filename == '':
         flash('No selected file')
         return redirect(request.url)
-    file_name = str(uuid.uuid4()) + ".wav"
     file_name = 'Temp' + ".wav"
     full_file_name = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
     file.save(full_file_name)
@@ -160,17 +197,26 @@ def save_record():
     print(text)
     # for result in pipe(text)[0]:
         # print(result)
-    answer_id = infer_POLY(text, emb_df)
-    
-    print(answer_id)
+    top_k_cross_scores, top_k_indices = infer_POLY(text, emb_df)
+    max_idx = np.argmax(top_k_cross_scores)
 
-    cursor = db_conn.cursor()
+    if top_k_cross_scores[max_idx] > 10:
+        emb_idx = top_k_indices[max_idx]
+        answer_id = emb_df.iloc[emb_idx]['index']
+        print(answer_id)
 
-    query = f'select * from path_table where id = {answer_id}'
+        cursor = db_conn.cursor()
 
-    cursor.execute(query)
-    answer_id = [{'audio' : c[1], 'video' : c[2], 'answer' : c[3]} for c in cursor][0]
-    return answer_id
+        query = f'select * from path_table where id = {answer_id}'
+
+        cursor.execute(query)
+        answer_id = [{'audio' : c[1], 'video' : c[2], 'answer' : c[3], 'text' : text} for c in cursor][0]
+        print(answer_id['answer'])
+        return answer_id
+
+    else:
+        answer = '시민님, 적절한 답변이 없습니다.'
+        return {'answer' : answer, 'text' : text}
     
 def infer_STT(filename):
     global model_STT
@@ -179,13 +225,13 @@ def infer_STT(filename):
     return result["text"]
 
 def infer_POLY(text, emb_df):
-    global model_bert
-    global tokenizer
-    call_center = Category_Callcenter(model=model_bert, tokenizer=tokenizer, emb_df=emb_df, device=device)
-    emb_idx = call_center.inference(text)
-    print(emb_idx)
-    answer_id = emb_df.iloc[emb_idx]['index']
-    return answer_id
+    global tokenizer_poly
+    call_center = Callcenter(poly_encoder=poly_encoder, cross_encoder=cross_encoder,
+                        tokenizer=tokenizer_poly, emb_df=emb_df, device=device, topk= 10)
+    top_k_cross_scores, top_k_indices = call_center.inference(text)
+    print(top_k_cross_scores)
+    print(top_k_indices)
+    return top_k_cross_scores, top_k_indices
 
 def toxic_check(txt):
     result = pipe(txt)
@@ -195,8 +241,97 @@ def toxic_check(txt):
     
     else: 
         return False
+    
+# @app.route('/save-text', methods=['POST'])
+# def savetext():
+#     emb_df = dfs[category_dict[category]]
+
+#     text = request.form['question']
+#     if toxic_check(text):
+#         ment = "욕설이 감지되었습니다."
+#         # print(ment)
+#         return ment
+    
+#     print(text)
+#     # for result in pipe(text)[0]:
+#         # print(result)
+#     top_k_cross_scores, top_k_indices = infer_POLY(text, emb_df)
+#     max_idx = np.argmax(top_k_cross_scores)
+
+#     if top_k_cross_scores[max_idx] > 10:
+#         emb_idx = top_k_indices[max_idx]
+#         answer_id = emb_df.iloc[emb_idx]['index']
+#         print(answer_id)
+
+#         cursor = db_conn.cursor()
+
+#         query = f'select * from path_table where id = {answer_id}'
+
+#         cursor.execute(query)
+#         answer_id = [{'audio' : c[1], 'video' : c[2], 'answer' : c[3], 'text' : text} for c in cursor][0]
+#         print(answer_id['answer'])
+#         return answer_id
+
+#     else:
+#         answer = '시민님, 적절한 답변이 없습니다.'
+#         return {'answer' : answer, 'text' : text}
+    
+# def infer_POLY(text, emb_df):
+#     global tokenizer_poly
+#     call_center = Callcenter(poly_encoder=poly_encoder, cross_encoder=cross_encoder,
+#                         tokenizer=tokenizer_poly, emb_df=emb_df, device=device, topk= 10)
+#     top_k_cross_scores, top_k_indices = call_center.inference(text)
+#     print(top_k_cross_scores)
+#     print(top_k_indices)
+#     return top_k_cross_scores, top_k_indices
+
+# def toxic_check(txt):
+#     result = pipe(txt)
+
+#     if result[0][0]['label'] != "None":
+#         return True
+    
+#     else: 
+#         return False
+
+# def txt_input():
+#     global category
+#     print(f'category : {category}')
+#     text = request.form['question']
+#     if toxic_check(text):
+#         ment = "욕설이 감지되었습니다."
+#         # print(ment)
+#         return ment
+    
+#     print(text)
+#     # for result in pipe(text)[0]:
+#         # print(result)
+#     emb_df = dfs[category_dict[category]]
+#     answer_id = infer_POLY(text, emb_df)
+    
+#     print(answer_id)
+
+#     cursor = db_conn.cursor()
+
+#     query = f'select * from path_table where id = {answer_id}'
+
+#     cursor.execute(query)
+#     answer_id = [{'audio' : c[1], 'video' : c[2], 'answer' : c[3], 'text' : text} for c in cursor][0]
+    
+#     cursor = db_conn.cursor()
+#     query = f'select * from faq where category = {category_dict[category]} order by count desc limit 20'
+
+#     cursor.execute(query)
+    
+#     result = []
+#     for idx, i in enumerate(cursor):
+#         counts[i[0]] = i[2]
+#         result.append({'id' : i[0], 'question' : i[1], 'count' : idx})
+
+#     return render_template('video_main.html', title = category, answer_id= answer_id, result= result)
+
 
 if __name__ == '__main__':
     # app.run(debug=True)
     # host 등을 직접 지정하고 싶다면
-    app.run(host='0.0.0.0', port='8080', debug=True, threaded=True)
+    app.run(host='0.0.0.0', port='4000', debug=True, threaded=True)
