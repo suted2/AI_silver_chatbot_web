@@ -2,7 +2,7 @@
 <html lang="ko">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=1.0">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link href="https://webfontworld.github.io/SCoreDream/SCoreDream.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -21,7 +21,7 @@
             .dasan_mark {
                 width: 150px;
                 height: 50px;
-                background-image: url('https://www.120dasan.or.kr/static/dsnc/img/c09-img-1.png');
+                background-image: url('./static/image/alpaco.png');
                 background-position: center;
                 background-size: cover;
                 margin: 20px 20px auto auto;
@@ -113,7 +113,7 @@
                 text-align:center;
                 padding-top: 25px;
                 margin-left: 6%;
-                margin-bottom: 30px;
+                margin-bottom: calc(100vh - 100%);
                 }
             .btn_4 {
                 width: 40%;
@@ -127,7 +127,7 @@
                 padding-top: 25px;
                 margin-left: 20px;
                 margin-right: 6%;
-                margin-bottom: 30px;
+                margin-bottom: calc(100vh - 100%);
                 }
         </style>
         <script>
@@ -149,7 +149,7 @@
         </script>
     </head>
     
-    <body>
+    <body style="background: linear-gradient( #ABDECE, #C3E7DB, white )">
         <div class="top_region">
             <button type="button", class="back_btn btn-outline-secondary btn-lg", onclick="location.href='/'"> 뒤로 가기 </button>
             <div class="dasan_mark"></div>
@@ -166,7 +166,7 @@
         </div>
         
         <div class="sub_box" id="sub-box">
-            안녕하세요! 다산 콜센터 AI 상담원 {{person}}입니다. 상담받고 싶은 주제를 선택해 주세요.
+            안녕하세요! 알파코 AI 상담원 {{person}}입니다. 상담받고 싶은 주제를 선택해 주세요.
         </div>
         
 

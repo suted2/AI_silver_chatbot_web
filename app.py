@@ -6,11 +6,8 @@ from transformers import TextClassificationPipeline, BertForSequenceClassificati
 import pandas as pd
 import torch
 import numpy as np
-
 import pymysql
 from model_for_inference import Load_Model_Tokenizer
-import os
-import torch
 from inference import Callcenter
 
 # DB연동
@@ -33,19 +30,24 @@ category_dict = {'일반행정' : 0,
                 '대중교통' : 3}
 
 person_dict = {'0' : '지창욱',
-                '1' : '유재석'}
+                '1' : '이원재'}
 category = -1
 person_id = 0
 
+video_list = os.listdir("./static/video")
+
+# 실행해 놓은 임베딩 파일 불러오기
 df0 = pd.read_pickle('dbPickle/normal_emb_id.pickle')
 df1 = pd.read_pickle('dbPickle/corona_emb_id.pickle')
 df2 = pd.read_pickle('dbPickle/water_emb_id.pickle')
 df3 = pd.DataFrame()
 dfs = [df0, df1, df2, df3]
 
+# GPU 사용하기
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print("연결 Device :", device)
 
+# 필요 경로, 모델 저장 및 불러오기
 poly_dir = 'models/poly_encoder'
 cross_dir = 'models/cross_encoder'
 cross_encoder, _ = Load_Model_Tokenizer(cross_dir, model_type='cross')
@@ -89,6 +91,8 @@ def toxic_check(txt):
         return True
     else: 
         return False
+    
+infer_STT("./audio/Temp.wav")
 
 # Flask 객체 인스턴스 생성
 app = Flask(__name__)
@@ -130,6 +134,8 @@ def video_main():
         query = f'select * from path_table where id = {answer_id}'
         cursor.execute(query)
         answer_id = [{'audio' : person_id + '_' + c[1], 'video' : person_id + '_' + c[2], 'answer' : c[3]} for c in cursor][0]
+        if answer_id['video'] not in video_list:
+            answer_id['video'] = 'empty.mp4'
     else:
         answer_id = {'audio' : f'{person_id}_intro2.wav', 'video' : f'{person_id}_intro2.mp4', 'answer' : '하단 중앙의 마이크 버튼을 눌러 시작, 종료하셔서 상담을 진행하실 수 있습니다.'} # 인트로용 멘트로 변경
 
@@ -151,6 +157,7 @@ def txt_input():
     global person_id
     global category
     category = request.args.get('category')
+    
     print(category)
     
     text = request.form['question']
@@ -169,14 +176,24 @@ def txt_input():
         emb_idx = top_k_indices[max_idx]
         answer_id = emb_df.iloc[emb_idx]['index']
         print(answer_id)
+        
+        cursor = db_conn.cursor()
+        query = f'select count from faq WHERE id = {answer_id}'
+        cursor.execute(query)
+        count = [c[0] for c in cursor][0] + 1
 
         cursor = db_conn.cursor()
+        query = f'UPDATE faq SET count = {count} WHERE id = {answer_id}'
+        cursor.execute(query)
+        db_conn.commit()
 
+        cursor = db_conn.cursor()
         query = f'select * from path_table where id = {answer_id}'
-
         cursor.execute(query)
         answer_id = [{'audio' : person_id + '_' + c[1], 'video' : person_id + '_' + c[2], 'answer' : c[3], 'text' : text} for c in cursor][0]
         print(answer_id['answer'])
+        if answer_id['video'] not in video_list:
+            answer_id['video'] = 'empty.mp4'
         return answer_id
 
     else:
@@ -214,6 +231,15 @@ def save_record():
         emb_idx = top_k_indices[max_idx]
         answer_id = emb_df.iloc[emb_idx]['index']
         print(answer_id)
+        cursor = db_conn.cursor()
+        query = f'select count from faq WHERE id = {answer_id}'
+        cursor.execute(query)
+        count = [c[0] for c in cursor][0] + 1
+
+        cursor = db_conn.cursor()
+        query = f'UPDATE faq SET count = {count} WHERE id = {answer_id}'
+        cursor.execute(query)
+        db_conn.commit()
 
         cursor = db_conn.cursor()
 
@@ -221,13 +247,14 @@ def save_record():
 
         cursor.execute(query)
         answer_id = [{'audio' : person_id + '_' + c[1], 'video' : person_id + '_' + c[2], 'answer' : c[3], 'text' : text} for c in cursor][0]
-        print(answer_id['answer'])
+        if answer_id['video'] not in video_list:
+            answer_id['video'] = 'empty.mp4'
         return answer_id
 
     else:
         answer = '시민님, 적절한 답변이 없습니다.'
         return {'answer' : answer, 'text' : text}
-    
+
 if __name__ == '__main__':
     # app.run(debug=True)
     # host 등을 직접 지정하고 싶다면
