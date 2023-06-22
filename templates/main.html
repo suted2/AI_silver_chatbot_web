@@ -1,33 +1,57 @@
-</html>
-
 <!DOCTYPE html>
 <html lang="ko">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0, minimum-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href="https://webfontworld.github.io/SCoreDream/SCoreDream.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <title>Temp</title>
         <style>
+            * {
+                user-select: none;
+                overflow-x: hidden;
+            }
+            .top_region {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-left: 20px;
+                }
             .dasan_mark {
                 width: 150px;
                 height: 50px;
-                background-image: url('http://arisys.co.kr/wp-content/uploads/2019/10/logo.png');
+                background-image: url('./static/image/alpaco.png');
                 background-position: center;
                 background-size: cover;
                 margin: 20px 20px auto auto;
                 }
+            .back_btn {
+                width: 120px;
+                margin-top: 20px;
+                margin-left: 10px;
+                font-family: 'SCoreDream';
+                font-weight: 700;
+                font-style: normal;
+                }
             .video_region {
-                color: black;
                 width: 90%;
                 height: 50%;
                 max-width: 700px;
                 max-height: 700px;
-                border-style:solid;
                 text-align: center;
-                padding-top: 10px;
                 margin: 20px auto;
+                }
+            .video {
+                width: 100%;
+                height: 100%;
+                }
+            .sub_on {
+                position: absolute;
+                width: 35%;
+                left: 77%;
+                top: 15%;
+                transform: translate(-50%, -50%);
                 }
             .sub_box {
                 width: 90%;
@@ -41,15 +65,7 @@
                 color:black;
                 border-style:solid;
                 text-align: center;
-                background-color: gray;
-                }
-            .sub_on {
-                width : 150px;
-                position: relative;
-                top: 15px;
-                left: 81%;
-                transform: translate(-50%, -50%);
-                
+                background-color: rgb(215, 215, 215);
                 }
             .btn_region1 {
                 text-align: center;
@@ -58,12 +74,13 @@
                 width: 40%;
                 max-width: 150px;
                 height: 80px;
-                border: 1px solid red;
                 border-radius: 100px;
+                border: 1px solid black;
+                background-color: #C2FFF0;
                 text-align:center;
                 display:inline-block;
-                margin-left: 6%;
                 padding-top: 25px;
+                margin-left: 6%;
                 margin-top:20px;
                 margin-bottom: 30px;
                 }
@@ -71,8 +88,9 @@
                 width: 40%;
                 max-width: 150px;
                 height: 80px;
-                border: 1px solid blue;
                 border-radius: 100px;
+                border: 1px solid black;
+                background-color: #C2FFF0;
                 display:inline-block;
                 text-align:center;
                 padding-top: 25px;
@@ -88,18 +106,20 @@
                 width: 40%;
                 max-width: 150px;
                 height: 80px;
-                border: 1px solid green;
+                border: 1px solid black;
+                background-color: #C2EDFF;
                 border-radius: 100px;
                 display:inline-block;
                 text-align:center;
                 padding-top: 25px;
                 margin-left: 6%;
-                margin-bottom: 30px;
+                margin-bottom: calc(100vh - 100%);
                 }
             .btn_4 {
                 width: 40%;
                 max-width: 150px;
                 height: 80px;
+                background-color: #C2EDFF;
                 border: 1px solid black;
                 border-radius: 100px;
                 display:inline-block;
@@ -107,7 +127,7 @@
                 padding-top: 25px;
                 margin-left: 20px;
                 margin-right: 6%;
-                margin-bottom: 30px;
+                margin-bottom: calc(100vh - 100%);
                 }
         </style>
         <script>
@@ -126,39 +146,44 @@
                     }
                 });
             });
-
         </script>
     </head>
     
-    <body>
-        <div class="dasan_mark">
-    
+    <body style="background: linear-gradient( #ABDECE, #C3E7DB, white )">
+        <div class="top_region">
+            <button type="button", class="back_btn btn-outline-secondary btn-lg", onclick="location.href='/'"> 뒤로 가기 </button>
+            <div class="dasan_mark"></div>
         </div>
+
         <div class="video_region">
-            <div class="sub_on"><button type="button", class="btn btn-outline-dark", id="btn-on" >📃 자막 켜기</button></div>
-            <h1>영상이 들어감</h1>
-            <h5>영상!</h5>
+            <video class="video" autoplay> 
+                <source src="static/video/{{person_id}}_intro.mp4" type="video/mp4">
+            </video>
+            <div class="sub_on">
+                <button type="button", class="btn_sub btn-secondary" id="btn-on"
+                style="font-family: 'SCoreDream'; font-weight: 400; font-style: normal; font-size: 20px;"> 📃 자막 켜기 </button>
+            </div>
         </div>
         
         <div class="sub_box" id="sub-box">
-            안녕하세요!
+            안녕하세요! 알파코 AI 상담원 {{person}}입니다. 상담받고 싶은 주제를 선택해 주세요.
         </div>
         
 
         <div class="btn_region1">
-            <div class="btn_1", onclick="location.href='/video_main?id=admin'">
-                <h2> 일반 행정 </h2>
+            <div class="btn_1", onclick="location.href='/video_main?person_id={{person_id}}&category=일반행정'">
+                <h2 style="font-family: 'SCoreDream'; font-weight: 600; font-style: normal;"> 일반 행정 </h2>
             </div>
-            <div class="btn_2", onclick="location.href='/video_main?id=corona'">
-                <h2> 코로나 </h2>
+            <div class="btn_2", onclick="location.href='/video_main?person_id={{person_id}}&category=코로나'">
+                <h2 style="font-family: 'SCoreDream'; font-weight: 600; font-style: normal;"> 코로나 </h2>
             </div>
         </div>
         <div class="btn_region2">
-            <div class="btn_3", onclick="location.href='/video_main?id=sewage'">
-                <h2>생활하수도</h2>
+            <div class="btn_3", onclick="location.href='/video_main?person_id={{person_id}}&category=생활하수도'">
+                <h2 style="font-family: 'SCoreDream'; font-weight: 600; font-style: normal;">생활하수도</h2>
             </div>
-            <div class="btn_4", onclick="location.href='/video_main?id=transport'">
-                <h2>대중 교통</h2>
+            <div class="btn_4", onclick="location.href='/video_main?person_id={{person_id}}&category=대중교통'">
+                <h2 style="font-family: 'SCoreDream'; font-weight: 600; font-style: normal;">대중 교통</h2>
             </div>
         </div>
     </body>
