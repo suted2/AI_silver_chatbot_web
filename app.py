@@ -116,6 +116,7 @@ def to_main():
 def video_main():
     global person_id
     global category
+    person_id = request.args.get('person_id')
     category = request.args.get('category')
 
     if 'id' in request.args:
@@ -142,7 +143,7 @@ def video_main():
         counts[i[0]] = i[2]
         result.append({'id' : i[0], 'question' : i[1], 'count' : idx})
 
-    return render_template('video_main.html', title = category, answer_id= answer_id, result= result)
+    return render_template('video_main.html', title = category, answer_id= answer_id, result= result, person_id=person_id)
 
 
 @app.route('/video_main', methods=['POST']) # 텍스트로 질문하기
