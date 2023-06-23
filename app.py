@@ -190,7 +190,7 @@ def txt_input():
         cursor = db_conn.cursor()
         query = f'select * from path_table where id = {answer_id}'
         cursor.execute(query)
-        answer_id = [{'audio' : person_id + '_' + c[1], 'video' : person_id + '_' + c[2], 'answer' : c[3], 'text' : text} for c in cursor][0]
+        answer_id = [{'audio' : '0_' + c[1], 'video' : person_id + '_' + c[2], 'answer' : c[3], 'text' : text} for c in cursor][0]
         print(answer_id['answer'])
         if answer_id['video'] not in video_list:
             answer_id['video'] = 'empty.mp4'
@@ -246,7 +246,7 @@ def save_record():
         query = f'select * from path_table where id = {answer_id}'
 
         cursor.execute(query)
-        answer_id = [{'audio' : person_id + '_' + c[1], 'video' : person_id + '_' + c[2], 'answer' : c[3], 'text' : text} for c in cursor][0]
+        answer_id = [{'audio' : '0_' + c[1], 'video' : person_id + '_' + c[2], 'answer' : c[3], 'text' : text} for c in cursor][0]
         if answer_id['video'] not in video_list:
             answer_id['video'] = 'empty.mp4'
         return answer_id

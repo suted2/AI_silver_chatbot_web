@@ -28,11 +28,11 @@
                 }
             .back_btn {
                 width: 120px;
+                height: 50px;
                 margin-top: 20px;
-                margin-left: 10px;
-                font-family: 'SCoreDream';
-                font-weight: 700;
-                font-style: normal;
+                margin-left: 10px;  
+                padding-top: 8px;
+                padding-botton: 0px;
                 }
             .video_region {
                 width: 90%;
@@ -151,13 +151,13 @@
     
     <body style="background: linear-gradient( #ABDECE, #C3E7DB, white )">
         <div class="top_region">
-            <button type="button", class="back_btn btn-outline-secondary btn-lg", onclick="location.href='/'"> 뒤로 가기 </button>
+            <button type="button", class="back_btn btn-outline-secondary btn-lg", onclick="location.href='/'"><img width=100% height= 100% src="./static/image/back.png"></button>
             <div class="dasan_mark"></div>
         </div>
 
         <div class="video_region">
             <video class="video" autoplay> 
-                <source src="static/video/{{person_id}}_intro.mp4" type="video/mp4">
+                <source src="./static/video/{{person_id}}_intro.mp4" type="video/mp4">
             </video>
             <div class="sub_on">
                 <button type="button", class="btn_sub btn-secondary" id="btn-on"
