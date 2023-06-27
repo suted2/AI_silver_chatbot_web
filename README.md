@@ -1,12 +1,18 @@
 # AI_silver_chatbot_web
-AI_silver_chatbot_web 구현을 위한 레포입니다. [( 실버 AI 화상 상담 챗봇 Git )](https://github.com/suted2/AI_video_chatbot)
+AI_silver_chatbot_web 구현을 위한 레포입니다. Github URL : [https://github.com/suted2/AI_video_chatbot](https://github.com/suted2/AI_video_chatbot)
 ![flow](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/a5151761-a64d-4c7a-b9ec-ee8549f3334a)
 
-( Bert 모델을 위한 파일, DataBase 연결, 영상 및 음성 파일이 없어 원활하게 구동이 되지 않습니다. )
+( Bert 모델을 위한 파일, DataBase 연결, 영상 및 음성 파일이 없어 원활하게 구동이 되지 않습니다. 페이지를 이용하고 싶으시다면 @Kihoon9498 로 메일주시면 감사하겠습니다.)
 
 ## Web 첫 페이지
 
-![슬라이드55](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/28d4d462-db32-439d-8ba5-5d95133d34e1)
+![슬라이드55](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/3ab61c58-b433-47ae-ab9b-8f1622e593a0)
+
+링크 1 : [arsalpacos5.site](http://arsalpacos5.site/)
+
+링크 2 : [alpaco5.site](http://alpaco5.site/) 
+
+### 위의 링크는 모바일로 연결하면 더 원활하게 이용이 가능합니다.
 
 시작 첫 페이지 구성입니다.
 
@@ -15,12 +21,7 @@ AI_silver_chatbot_web 구현을 위한 레포입니다. [( 실버 AI 화상 상�
 
 ## Web 메인 페이지 
 
-![슬라이드56](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/99fc7e33-ce8a-4f3e-9067-6f241e869837)
-
-링크 1 : [arsalpacos5.site](http://arsalpacos5.site/)
-
-링크 2 : [alpaco5.site](http://alpaco5.site/)
-#### 모바일로 연결하면 더 원활하게 이용이 가능합니다.
+![슬라이드56](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/87c9d19b-26d4-4957-86c5-708c145f13e6)
 
 현재 메인 페이지의 구성입니다. 
 
@@ -29,7 +30,7 @@ AI_silver_chatbot_web 구현을 위한 레포입니다. [( 실버 AI 화상 상�
 
 ## Web 질문 페지
 
-![슬라이드57](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/e9761f14-349c-4eda-85d4-7d0e90e5419f)
+![슬라이드57](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/00848475-cd1a-49eb-aae9-7c8bb979931a)
 
 1번 버튼 : 녹음 버튼을 눌러 질문을 시작하고, 한번 더 눌러 녹음을 종료할 수 있습니다.
           녹음된 파일은 STT 모델과 Toxic-Check 모델을 거쳐 질문 Text가 전달될 계획입니다.
