@@ -1,4 +1,4 @@
-![슬라이드57](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/c4ea3cc3-fd8d-4124-9ba3-24ffe20d4d07)# AI_silver_chatbot_web
+# AI_silver_chatbot_web
 AI_silver_chatbot_web 구현을 위한 레포입니다. 
 
 
