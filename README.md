@@ -4,7 +4,7 @@ AI_silver_chatbot_web 구현을 위한 레포입니다. [( 실버 AI 화상 상�
 
 ( Bert 모델을 위한 파일, DataBase 연결, 영상 및 음성 파일이 없어 원활하게 구동이 되지 않습니다. )
 
-## Web 첫 페이지 -> 링크 : [arsalpacos5.site](arsalpacos5.site)
+## Web 첫 페이지 -> 링크 : [arsalpacos5.site](http://arsalpacos5.site/)
 
 ![슬라이드55](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/28d4d462-db32-439d-8ba5-5d95133d34e1)
 
