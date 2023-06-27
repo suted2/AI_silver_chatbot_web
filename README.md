@@ -17,7 +17,8 @@ AI_silver_chatbot_web 구현을 위한 레포입니다. [( 실버 AI 화상 상�
 
 ![슬라이드56](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/99fc7e33-ce8a-4f3e-9067-6f241e869837)
 
-링크 1 : [arsalpacos5.site](http://arsalpacos5.site/) /n
+링크 1 : [arsalpacos5.site](http://arsalpacos5.site/)
+
 링크 2 : [alpaco5.site](http://alpaco5.site/)
 #### 모바일로 연결하면 더 원활하게 이용이 가능합니다.
 
