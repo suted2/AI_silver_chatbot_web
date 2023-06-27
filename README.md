@@ -2,7 +2,7 @@
 AI_silver_chatbot_web 구현을 위한 레포입니다. Github URL : [https://github.com/suted2/AI_video_chatbot](https://github.com/suted2/AI_video_chatbot)
 ![flow](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/a5151761-a64d-4c7a-b9ec-ee8549f3334a)
 
-( Bert 모델을 위한 파일, DataBase 연결, 영상 및 음성 파일이 없어 원활하게 구동이 되지 않습니다. 페이지를 이용하고 싶으시다면 @Kihoon9498 로 메일주시면 감사하겠습니다.)
+( Bert 모델을 위한 파일, DataBase 연결, 영상 및 음성 파일이 없어 원활하게 구동이 되지 않습니다. 페이지를 이용하고 싶으시다면 @Kihoon9498로 메일주시면 감사하겠습니다.)
 
 ## Web 첫 페이지
 
