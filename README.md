@@ -1,6 +1,7 @@
 # AI_silver_chatbot_web
 AI_silver_chatbot_web 구현을 위한 레포입니다. 
 
+( Bert 모델을 위한 파일, DataBase 연결, 영상 및 음성 파일이 없어 원활하게 구동이 되지 않습니다. )
 
 ## Front_page
 
