@@ -28,7 +28,7 @@ AI_silver_chatbot_web 구현을 위한 레포입니다. Github URL : [https://gi
 해당 메인 페이지에서 인사 영상이 자동으로 실행되고, 원하는 주제를 선택하여 상담을 진행할 수 있습니다.
 
 
-## Web 질문 페지
+## Web 질문 페이지
 
 ![슬라이드57](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/00848475-cd1a-49eb-aae9-7c8bb979931a)
 
