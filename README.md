@@ -17,7 +17,11 @@ AI_silver_chatbot_web 구현을 위한 레포입니다. [( 실버 AI 화상 상�
 
 ![슬라이드56](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/99fc7e33-ce8a-4f3e-9067-6f241e869837)
 
-현재 메인 페이지의 구성입니다. 링크 : [arsalpacos5.site](http://arsalpacos5.site/) // 모바일로 접속하면 더 원활하게 사용이 가능합니다.
+링크 1 : [arsalpacos5.site](http://arsalpacos5.site/)
+링크 2 : [alpaco5.site](http://alpaco5.site/)
+#### 모바일로 연결하면 더 원활하게 이용이 가능합니다.
+
+현재 메인 페이지의 구성입니다. 
 
 해당 메인 페이지에서 인사 영상이 자동으로 실행되고, 원하는 주제를 선택하여 상담을 진행할 수 있습니다.
 
