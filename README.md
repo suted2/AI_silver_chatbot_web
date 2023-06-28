@@ -1,5 +1,5 @@
-# AI_silver_chatbot_web
-AI_silver_chatbot_web 구현을 위한 레포입니다. Github URL : [https://github.com/suted2/AI_video_chatbot](https://github.com/suted2/AI_video_chatbot)
+# AI_silver_chatbot_web // Github URL : [https://github.com/suted2/AI_video_chatbot](https://github.com/suted2/AI_video_chatbot)
+AI_silver_chatbot_web 구현을 위한 레포입니다. 
 ![flow](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/a5151761-a64d-4c7a-b9ec-ee8549f3334a)
 
 ## Web 첫 페이지
@@ -19,13 +19,13 @@ AI_silver_chatbot_web 구현을 위한 레포입니다. Github URL : [https://gi
 해당 페이지에서 원하는 상담원을 선택하여 상담을 진행할 수 있습니다.
 
 
-## Web 메인 페이지 
+## Web 카테고리 선택 페이지 
 
 ![슬라이드56](https://github.com/suted2/AI_silver_chatbot_web/assets/121469546/87c9d19b-26d4-4957-86c5-708c145f13e6)
 
-현재 메인 페이지의 구성입니다. 
+현재 카테고리 선택 페이지의 구성입니다.
 
-해당 메인 페이지에서 인사 영상이 자동으로 실행되고, 원하는 주제를 선택하여 상담을 진행할 수 있습니다.
+해당 페이지에서 인사 영상이 자동으로 실행되고, 원하는 주제를 선택하여 상담을 진행할 수 있습니다.
 
 
 ## Web 질문 페이지
