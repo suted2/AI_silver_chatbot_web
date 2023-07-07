@@ -79,7 +79,7 @@ def infer_STT(filename):
 def infer_POLY(text, emb_df):
     global tokenizer_poly
     call_center = Callcenter(poly_encoder=poly_encoder, cross_encoder=cross_encoder,
-                        tokenizer=tokenizer_poly, emb_df=emb_df, device=device, topk= 10)
+                        tokenizer=tokenizer_poly, emb_df=emb_df, device=device, topk= 5)
     top_k_cross_scores, top_k_indices = call_center.inference(text)
     print(top_k_cross_scores)
     print(top_k_indices)
@@ -172,7 +172,7 @@ def txt_input():
     top_k_cross_scores, top_k_indices = infer_POLY(text, emb_df)
     max_idx = np.argmax(top_k_cross_scores)
 
-    if top_k_cross_scores[max_idx] > 10:
+    if top_k_cross_scores[max_idx] > 11.55:
         emb_idx = top_k_indices[max_idx]
         answer_id = emb_df.iloc[emb_idx]['index']
         print(answer_id)
@@ -227,7 +227,7 @@ def save_record():
     top_k_cross_scores, top_k_indices = infer_POLY(text, emb_df)
     max_idx = np.argmax(top_k_cross_scores)
 
-    if top_k_cross_scores[max_idx] > 10:
+    if top_k_cross_scores[max_idx] > 11.55:
         emb_idx = top_k_indices[max_idx]
         answer_id = emb_df.iloc[emb_idx]['index']
         print(answer_id)
@@ -254,7 +254,7 @@ def save_record():
     else:
         answer = '시민님, 적절한 답변이 없습니다.'
         return {'answer' : answer, 'text' : text}
-
+    
 if __name__ == '__main__':
     # app.run(debug=True)
     # host 등을 직접 지정하고 싶다면

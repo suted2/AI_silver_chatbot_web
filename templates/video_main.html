@@ -22,7 +22,7 @@
             .dasan_mark {
                 width: 150px;
                 height: 50px;
-                background-image: url('./static/image/alpaco.png');
+                background-image: url('./static/image/dasan_mark.png');
                 background-position: center;
                 background-size: cover;
                 margin: 20px 20px auto auto;
@@ -218,18 +218,21 @@
                     )
                 }
                 else if (data.answer=="시민님, 적절한 답변이 없습니다."){
-                    $("#flash-notification").html(
-                        `
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <h1>시민님, 적절한 답변이 없습니다.</h1>
-                            <strong>${gbl_data.text}</strong> 해당 질문을 해주셨습니다.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                        `
+                    $("#video_region").html(
+                    `
+                    <video class="video" autoplay>
+                        <source src="static/video/empty.mp4" type="video/mp4">
+                    </video>
+                    <audio src="static/audio/${gbl_data.audio}" controls="" autoplay="autoplay" preload="auto" style="display:none;"></audio>
+                    <div class="sub_on"><button type="button", class="btn btn-secondary", id="btn-on-s" >📃 자막 켜기</button></div>
+                    <div class="sub_box" id="sub-box-s">
+                        시민님, 적절한 답변이 없습니다.
+                    </div>
+                    `
                     )
                 }
                 else if (data.video=="empty.mp4"){
-                    $("#video_region").html(  
+                    $("#video_region").html(
                         `
                         <video class="video" autoplay>
                             <source src="static/video/empty.mp4" type="video/mp4">
@@ -368,14 +371,17 @@
                         )
                     }
                     else if (data.answer=="시민님, 적절한 답변이 없습니다."){
-                        $("#flash-notification").html(
-                            `
-                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                <h1>시민님, 적절한 답변이 없습니다.</h1>
-                                <strong>${gbl_data.text}</strong> 해당 질문을 해주셨습니다.
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                            `
+                        $("#video_region").html(
+                        `
+                        <video class="video" autoplay>
+                            <source src="static/video/empty.mp4" type="video/mp4">
+                        </video>
+                        <audio src="static/audio/${gbl_data.audio}" controls="" autoplay="autoplay" preload="auto" style="display:none;"></audio>
+                        <div class="sub_on"><button type="button", class="btn btn-secondary", id="btn-on-s" >📃 자막 켜기</button></div>
+                        <div class="sub_box" id="sub-box-s">
+                            시민님, 적절한 답변이 없습니다.
+                        </div>
+                        `
                         )
                     }
                     else if (data.video=="empty.mp4"){
@@ -538,7 +544,7 @@
             </button>
             <button class="btn_faq btn-primary btn-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom"
                     style="font-family: 'SCoreDream'; font-weight: 600; font-style: normal;">자주 묻는 질문<br>FAQ</button>
-            <button class="btn_call btn-primary btn-lg" type="button" onclick="document.location.href='tel:010-3752-9498'"><img width=50px height= 50px src="./static/image/call.png"></button>
+            <button class="btn_call btn-primary btn-lg" type="button" onclick="document.location.href='tel:010-1234-1234'"><img width=50px height= 50px src="./static/image/call.png"></button>
         </div>
 
     </body>
