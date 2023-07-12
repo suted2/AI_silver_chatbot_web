@@ -29,8 +29,8 @@ category_dict = {'일반행정' : 0,
                 '생활하수도' : 2,
                 '대중교통' : 3}
 
-person_dict = {'0' : '지창욱',
-                '1' : '이원재'}
+person_dict = {'0' : '서지훈',
+                '1' : '서유진'}
 category = -1
 person_id = 0
 
